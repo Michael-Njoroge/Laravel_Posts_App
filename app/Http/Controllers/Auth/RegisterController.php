@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cookie;
 
 class RegisterController extends Controller
 {
@@ -37,38 +38,31 @@ class RegisterController extends Controller
 
         auth()->attempt($request->only('email','password'));
 
-        return redirect() -> route('dashboard');
-    }
+        if(!$token = auth()->attempt($request->only('email', 'password'))){
+            return back() -> with('status', 'Error: Try again later');
+        }
+        return $this->respondWithToken($token);
+     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function index()
     {
-        //
+        return view('auth.register');
     }
 
-    /**
-     * Show the form for editing the specified resource.
+       /**
+     * Get the token array structure.
+     *
+     * @param  string $token
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function edit(string $id)
+    protected function respondWithToken($token)
     {
-        //
+        $cookie = Cookie::make('edms', $token, 60);
+        return redirect() -> route('dashboard')->withCookie($cookie);
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+ 
 }
