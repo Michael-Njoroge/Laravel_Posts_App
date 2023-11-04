@@ -7,12 +7,17 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+
+    public function __construct()
+    {
+        return $this->middleware(['auth'])->only('store','destroy');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $posts = Post::latest()-> with(['user','likes'])->paginate(3); //this are the collections
+        $posts = Post::latest()-> with(['user','likes'])->paginate(5); //this are the collections
         return view('posts.index',[
             'posts' => $posts
         ]);
