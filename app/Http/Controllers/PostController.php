@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -30,6 +31,11 @@ class PostController extends Controller
         $this->validate($request, [
             'body' => 'required'
         ]);
+
+        $request->user()->posts()->create($request->only('body'));
+    
+        return back();
+
     }
 
     /**
