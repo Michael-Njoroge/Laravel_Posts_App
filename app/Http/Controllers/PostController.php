@@ -12,7 +12,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('posts.index');
+        $posts = Post::paginate(3); //this are the collections
+        return view('posts.index',[
+            'posts' => $posts
+        ]);
     }
 
     /**
