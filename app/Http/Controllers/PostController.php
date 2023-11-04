@@ -12,7 +12,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with(['user','likes'])->paginate(3); //this are the collections
+        $posts = Post::latest()-> with(['user','likes'])->paginate(3); //this are the collections
         return view('posts.index',[
             'posts' => $posts
         ]);
@@ -68,8 +68,12 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-        //
+        $this->authorize('delete',$post);
+
+        $post->delete();
+
+        return back();
     }
 }
