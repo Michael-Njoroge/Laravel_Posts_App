@@ -7,12 +7,15 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostLikeController;
+use App\Http\Controllers\UserPostController;
 
 Route::get('/dashboard', [DashboardController::class,'index'])->name('dashboard');
 
 Route::get('/', function(){
     return view('home');
 })->name('home');
+
+Route::get('/users/{user:username}/posts', [UserPostController::class,'index'])->name('users.posts');
 
  
 Route::get('/register', [RegisterController::class,'index'])->name('register');
