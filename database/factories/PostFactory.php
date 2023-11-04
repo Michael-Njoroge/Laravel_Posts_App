@@ -17,7 +17,10 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'body' => $this->faker->sentence(20)
         ];
     }
 }
+
+//use the command to generate faker recoreds
+// App\Models\Post::factory()->times(200)->create([user_id => 2]);
